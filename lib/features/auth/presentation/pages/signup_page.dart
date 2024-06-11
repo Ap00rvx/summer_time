@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:summertime/core/common/widgets/gradient_button.dart';
 import 'package:summertime/core/theme/app_pallets.dart';
+import 'package:summertime/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:summertime/features/auth/presentation/pages/signin_page.dart';
 
 class SignupPage extends StatefulWidget {
@@ -41,7 +43,11 @@ class _SignupPageState extends State<SignupPage> {
                     hintText: "Password"
                 ),),
                 const Gap(20),
-                GradientElevatedButton(onPressed: (){}, buttonText: "Sign Up"),
+                GradientElevatedButton(onPressed: ()async{
+                  if(emailcontroller.text.isNotEmpty && passwordcontroller.text.isNotEmpty && nameController.text.isNotEmpty){
+                    context.read<AuthBloc>().add(AuthSignUp(name: nameController.text, email: emailcontroller.text, password: passwordcontroller.text));
+                  }
+                }, buttonText: "Sign Up"),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SigninPage()));
